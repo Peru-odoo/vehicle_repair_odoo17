@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="vehicle_repair_snippet" name="Repair Snippet">
+        <section class="oe_structure container repair_snippet">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center py-5">
+                        <h1 class="h1">Repairs</h1>
+                        <div class="h3" style="text-align:center">Latest Repairs</div>
+                        <div id="latest_record"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="external_snippets" inherit_id="website.snippets" priority="8">
+        <xpath expr="//div[@id='snippet_effect']//t[@t-snippet][last()]" position="after">
+            <t t-snippet="vehicle_repair.vehicle_repair_snippet" t-thumbnail="vehicle_repair/static/src/img/vehicle_repair.svg"/>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_vehicle_view" model="ir.actions.act_window">
+        <field name="name">Vehicle</field>
+        <field name="type">ir.actions.act_window</field>
+
+
+        <field name="res_model">vehicle.repair</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+
+    <record id="vehicle_repair_tree" model="ir.ui.view">
+        <field name="name">vehicle_repair.tree</field>
+        <field name="model">vehicle.repair</field>
+        <field name="arch" type="xml">
+<!--            <tree string="Channel">-->
+                <tree string="Channel" decoration-danger="state == 'inprogress' and due_date == today_date"
+                decoration-warning="state == 'inprogress' and due_date == next_date">
+                <field name="customer_id"/>
+                <field name="start_date"/>
+                <field name="due_date"/>
+                <field name="delivery_date"/>
+                <field name="next_date" invisible="1"/>
+                <field name="today_date" invisible="1"/>
+                <field name="state" invisible="1"/>
+                <field name="vehicle_type_id"/>
+                <field name="vehicle_model_id"/>
+                <field name="vehicle_number"/>
+                <field name="estimated_amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="vehicle_repair_form" model="ir.ui.view">
+        <field name="name">vehicle_repair.form</field>
+        <field name="model">vehicle.repair</field>
+        <field name="arch" type="xml">
+            <form string="Form">
+                <!--                <div>-->
+                <!--                    <button name="action_show_invoice" type="object" class="oe_stat_button"-->
+                <!--                            icon="fa-pencil-square-o" invisible="invoice_created != True">-->
+                <!--                        <div class="o_stat_info">-->
+                <!--                            <span class="o_stat_text">Invoice</span>-->
+                <!--                        </div>-->
+                <!--                    </button>-->
+                <!--                </div>-->
+                <header>
+                    <button id="btn_confirm" name="action_confirm" string="Confirm" class="btn-primary" type="object"
+                            invisible="state != 'draft'"/>
+
+                    <button id="btn_ready_for_delivery" name="action_ready_for_delivery" string="Ready for Delivery"
+                            class="btn-primary" type="object"
+                            invisible="state != 'inprogress'"/>
+
+<!--                    <button id="btn_send_email" name="action_send_email" string="Send by Email"-->
+<!--                            class="btn-primary" type="object"-->
+<!--                            invisible="state != 'readyfordelivery'"/>-->
+
+                    <button id="btn_invoice" name="create_invoice" string="Create Invoice" class="oe_highlight"
+                            type="object" invisible="state != 'readyfordelivery' or invoice_created == True"/>
+                    <field name="invoice_created" invisible="1"/>
+
+                    <button id="btn_done" name="action_done" string="Done" class="btn-primary" type="object"
+                            invisible="state != 'readyfordelivery'"/>
+
+                    <button id="btn_draft" name="action_draft" string="Set To Draft" class="btn-primary" type="object"
+                            invisible="state != 'readyfordelivery'"/>
+
+                    <button id="btn_cancel" name="action_cancel" string="Cancel" type="object"
+                            invisible="state != 'readyfordelivery'"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,inprogress,readyfordelivery,done,cancelled"
+                    />
+                    <xpath expr="//div[@class='oe_button_box']" position="before">
+                        <div>
+                            <button class="oe_stat_button" type="object" name="action_show_invoice"
+                                    icon="fa-pencil-square-o" string="Invoice" invisible="invoice_created != True"/>
+                        </div>
+                    </xpath>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Paid" bg_color="text-bg-success"
+                            invisible="not is_invoice_paid"/>
+                    <field name="is_invoice_paid" invisible="1"/>
+
+<!--                    <widget name="web_ribbon" title="Archive" bg_color="text-bg-danger"-->
+<!--                            invisible="not is_archive"/>-->
+<!--                    <field name="is_archive" invisible="1"/>-->
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference_no" readonly="1"/>
+                        </h1>
+                    </div>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <group>
+                        <group>
+                            <field name="customer_id" widget="res_partner_many2one"
+                                   context="{'res_partner_search_mode': 'customer', 'show_address': 1}"
+                                   readonly="state == 'inprogress'"/>
+                            <!--                            'show_vat': True-->
+                            <field name="mobile_no"/>
+                            <field name="service_type"/>
+                            <field name="service_advisor_id"/>
+                            <field name="vehicle_number"/>
+                            <field name="vehicle_type_id"/>
+                            <field name="vehicle_model_id" context="{'default_category_id' : vehicle_type_id}"/>
+                        </group>
+                        <group>
+                            <field name="start_date" readonly="state == 'inprogress'"/>
+                            <field name="duration_days"/>
+                            <field name="due_date"/>
+                            <field name="delivery_date"/>
+                            <field name="estimated_amount" widget="monetary"/>
+                            <field name="company_id"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="active"/>
+                            <field name="tags_ids" widget="many2many_tags"/>
+                        </group>
+
+                        <notebook>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="customer_complaint"/>
+                                </group>
+                            </page>
+
+                            <page string="Labour Cost" invisible="service_type != 'paid' or state == 'draft'">
+
+                                <field name="labour_cost_ids" readonly="state not in ['inprogress']">
+                                    <tree editable="bottom">
+                                        <field name="labour_id"/>
+                                        <field name="hourly_cost" widget="monetary"/>
+                                        <field name="hour_spend" widget="float_time"/>
+                                        <field name="sub_total"/>
+                                    </tree>
+
+                                </field>
+                                <field name="total_labour_cost" string="Total Labour Cost" widget="monetary"
+                                       readonly="1"/>
+
+                            </page>
+                            <page string="Consumed Parts" invisible="state == 'draft'">
+
+                                <field name="consumed_parts_ids" readonly="state not in ['inprogress']">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="quantity"/>
+                                        <field name="unit_price" widget="monetary"/>
+                                        <field name="subtotal" widget="monetary"/>
+                                    </tree>
+                                </field>
+                                <field name="total_part_cost" widget="monetary" readonly="1"/>
+
+                            </page>
+
+                        </notebook>
+                        <group>
+                            <field name="total_cost" tring="Total Cost" widget="monetary" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+    <record id="vehicle_repair_search" model="ir.ui.view">
+        <field name="name">vehicle.repair.search</field>
+        <field name="model">vehicle.repair</field>
+        <field name="arch" type="xml">
+            <search string="search">
+                <field name="reference_no"/>
+                <field name="vehicle_number"/>
+                <field name="customer_id"/>
+                <field name="service_advisor_id"/>
+                <field name="vehicle_type_id"/>
+
+                <filter name="draft_state" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="draft_state" string="In Progress" domain="[('state', '=', 'inprogress')]"/>
+                <filter name="draft_state" string="Ready For Delivery" domain="[('state', '=', 'readyfordelivery')]"/>
+                <filter name="draft_state" string="Done" domain="[('state', '=', 'done')]"/>
+                <filter name="draft_state" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+
+                <group expand="1" string="Group by">
+                    <filter string="State" name="state" context="{'group_by':'state'}"/>
+                    <filter string="Customer" name="customer_id" context="{'group_by':'customer_id'}"/>
+                    <filter string="Responsible User" name="service_advisor_id"
+                            context="{'group_by':'service_advisor_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

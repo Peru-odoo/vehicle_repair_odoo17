@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="configuration_view" model="ir.actions.act_window">
+        <field name="name">Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">repair.tag</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="repair_tag_tree" model="ir.ui.view">
+        <field name="name">repair_tag.tree</field>
+        <field name="model">repair.tag</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="repair_tag_form" model="ir.ui.view">
+        <field name="name">repair_tag.form</field>
+        <field name="model">repair.tag</field>
+        <field name="arch" type="xml">
+            <form string="Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

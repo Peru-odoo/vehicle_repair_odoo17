@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="repair_form">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <form id="form_repair" method="post" enctype="multipart/form-data" action="/create_repairs"
+                          class="o_mark_required" data-mark="*" data-model_name="" data-success-page="">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <br/>
+                        <div class="s_website_form_rows row s_col_no_bgcolor">
+                            <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                 data-type="char" data-name="Field">
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                           style="width: 300px" for="studio1">
+                                        <span class="s_website_form_label_content">Customer Name</span>
+                                        <span class="s_website_form_mark">*</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <select name="customer_id" id="customer_id" required=""
+                                                class="form-control link-style">
+                                            <option value=""></option>
+                                            <t t-foreach="partners" t-as="partners">
+                                                <option t-att-value="partners.id">
+                                                    <t t-esc="partners.name" t-att-value="partners.id"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                            </div>
+
+                            <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                 data-type="char" data-name="Field">
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                           style="width: 300px" for="studio1">
+                                        <span class="s_website_form_label_content">Service Advisor</span>
+                                        <span class="s_website_form_mark">*</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <select name="service_advisor_id" id="service_advisor_id" required=""
+                                                class="form-control link-style">
+                                            <option value=""></option>
+                                            <t t-foreach="advisor" t-as="advisor">
+                                                <option t-att-value="advisor.id">
+                                                    <t t-esc="advisor.name" t-att-value="advisor.id"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                            </div>
+
+                            <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                 data-type="char" data-name="Field">
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                           style="width: 300px" for="studio1">
+                                        <span class="s_website_form_label_content">Service Type</span>
+                                        <span class="s_website_form_mark">*</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <select name="service_type" id="service_type"
+                                                class="form-control link-style">
+                                            <option value="free">Free</option>
+                                            <option value="paid">Paid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                            </div>
+
+                            <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                 data-type="char" data-name="Field">
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                           style="width: 300px" for="studio1">
+                                        <span class="s_website_form_label_content">Vehicle Number</span>
+                                        <span class="s_website_form_mark">*</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <input id="vehicle_number" type="text" class="form-control s_website_form_input"
+                                               name="vehicle_number" required="1"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                            </div>
+
+                            <div class="form-group col-12 s_website_form_field s_website_form_required"
+                                 data-type="char" data-name="Field">
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                           style="width: 300px" for="studio1">
+                                        <span class="s_website_form_label_content">Vehicle Model</span>
+                                        <span class="s_website_form_mark">*</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <select name="vehicle_model_id" id="vehicle_model_id" required=""
+                                                class="form-control link-style">
+                                            <option value=""></option>
+                                            <t t-foreach="vehicle_model" t-as="vehicle_model">
+                                                <option t-att-value="vehicle_model.id">
+                                                    <t t-esc="vehicle_model.name" t-att-value="vehicle_model.id"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                            </div>
+
+                            <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                <div style="width: 300px;" class="s_website_form_label"/>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <br/>
+                                <br/>
+                            </div>
+
+                        </div>
+                    </form>
+                    <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                        <div style="width: 300px;" class="s_website_form_label"/>
+                        <a class="oe_product_image_link d-block h-100 position-relative"
+                           itemprop="url"
+                           contenteditable="false"
+                           t-attf-href="/customer">
+                            <input type="button" value="create customer" class="btn btn-primary"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

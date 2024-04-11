@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <menuitem id="vehicle_root_menu" name="Vehicle Repair">
+        <menuitem id="vehicle_first_menu" name="Vehicle">
+            <menuitem id="vehicle_action" action="action_vehicle_view" name="Repair"/>
+        </menuitem>
+        <menuitem id="tag_first_menu" name="Configuration">
+            <menuitem id="tag_action" action="configuration_view" name="Tags"/>
+        </menuitem>
+        <menuitem id="menu_vehicle_repair" name="Reporting">
+            <menuitem id="repairs_action" action="repair_report_wizard" name="Repairs"/>
+        </menuitem>
+    </menuitem>
+</odoo>

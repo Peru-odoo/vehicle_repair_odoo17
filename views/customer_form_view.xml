@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="customer_form_inherited" model="ir.ui.view">
+        <field name="name">customer.form.inherited</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="open_service_form" string="Service" type="object" class="oe_highlight"/>
+                    <field name="status" widget="statusbar"
+                           statusbar_visible="nonservice,service"/>
+                </header>
+            </xpath>
+
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button class="oe_stat_button" type="object" name="show_history" icon="fa-pencil-square-o">
+                    <field name="service_count" string="Service History" class="oe_stat_button_text" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

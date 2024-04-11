@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<templates id="template">
+    <t t-name="vehicle_repair.repair_snipped_carousel">
+        <div t-attf-id="repair_carousel" class="container carousel slide"
+             data-bs-ride="carousel" t-att-data-bs-interval="interval">
+            <div class="carousel-inner row w-100 mx-auto" role="listbox">
+                <t t-foreach="data" t-as="records" t-key="records.id">
+                    <div t-att-class="records.is_active ? 'carousel-item active' : 'carousel-item'">
+                        <div class="row">
+                            <t t-foreach="records" t-as="rec" t-key="rec.id">
+                                <div class="block span3 col-3">
+                                    <a t-attf-href="/details/{{rec.id}}">
+                                        <div class="btn btn-secondary o-default_snippet_template"
+                                             style="width:300px">
+                                            <span class="mb-0">
+                                                <img class="card-img-top" t-attf-src="data:image/png;base64,{{rec.image}}"
+                                                style="padding: 0px; margin: 0px; height: 160px; width:250px;"/>
+                                                <t t-esc="rec.customer_id[1]"/>
+                                                <br/>
+                                                <t t-esc="rec.reference_no"/>
+                                                <br/>
+                                                <t t-esc="rec.vehicle_model_id[1]"/>
+                                                <br/>
+                                                <t t-esc="rec.vehicle_number"/>
+                                            </span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+            </div>
+            <a t-attf-href="#repair_carousel" class="carousel-control-prev o_we_no_overlay o_not_editable"
+               data-bs-slide="prev" role="button"
+               aria-label="Previous" title="Previous">
+                <span class="fa fa-chevron-circle-left fa-2x"/>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a t-attf-href="#repair_carousel" class="carousel-control-next o_we_no_overlay o_not_editable"
+               data-bs-slide="next" role="button"
+               aria-label="Next" title="Next">
+                <span class="fa fa-chevron-circle-right fa-2x"/>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_vehiclerepair">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-set="repair" t-value="data['report']"/>
+                    <t t-set="types" t-value="data.get('vehicle_types', False)"/>
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <h2 class="text-center">Vehicle Repair Report</h2>
+                        <t t-if="data['count'] == 1">
+                                <span t-out="data['report'][0]['name']"/>
+                            <br/>
+                        </t>
+
+                        <t t-if="data['adv_count'] == 1">
+                            <span t-out="data['report'][0]['user_name']"/>
+                            <br/>
+                        </t>
+                    </div>
+                    <t t-if="group_by == 'vehicle_type_id'">
+                        <h2>Vehicle Type</h2>
+                    </t>
+                    <t t-if="group_by == 'service_type'">
+                        <h2>Service Type</h2>
+                    </t>
+
+                    <t t-foreach="data.get('service_types', False)" t-as="servicee">
+                        <h1 t-if="len(list(filter(lambda x: x['service_type'] == servicee, repair)))">
+                            <t t-esc="servicee"/>
+                        </h1>
+                        <table class="table" t-if="len(list(filter(lambda x: x['service_type'] == servicee, repair)))">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle Model</th>
+                                    <th>Vehicle Number</th>
+                                    <t t-if="data['count'] > 1">
+                                        <th>Customer</th>
+                                    </t>
+                                    <t t-if="data['adv_count'] > 1">
+                                        <th>Service Advisors</th>
+                                    </t>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>State</th>
+                                    <th>Estimate Amount</th>
+                                    <th>Total Amount</th>
+                                    <t t-if="group_by == 'vehicle_type_id'">
+                                        <th>Service Type</th>
+                                    </t>
+                                    <t t-if="group_by == 'service_type'">
+                                        <th>Vehicle Type</th>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="repair" t-as="rep">
+                                    <t t-if="rep['service_type'] == servicee">
+
+                                        <tr>
+                                            <td>
+                                                <span t-out="rep['fleet']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['vehicle_number']"/>
+                                            </td>
+                                            <t t-if="data['count'] > 1">
+                                                <td>
+                                                    <span t-out="rep['name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="data['adv_count'] > 1">
+                                                <td>
+                                                    <span t-out="rep['user_name']"/>
+                                                </td>
+                                            </t>
+                                            <td>
+                                                <span t-out="rep['start_date']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['due_date']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['state']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['estimated_amount']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['total_cost']"/>
+                                            </td>
+                                            <t t-if="group_by == 'vehicle_type_id'">
+
+                                                <td>
+                                                    <span t-out="rep['service_type']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="group_by == 'service_type'">
+                                                <td>
+                                                    <span t-out="rep['vehicle']"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-foreach="types" t-as="type">
+                        <h2 t-if="len(list(filter(lambda x: x['vehicle'] == type, repair)))">
+                            <t t-esc="type"/>
+                        </h2>
+                        <table class="table" t-if="len(list(filter(lambda x: x['vehicle'] == type, repair)))">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle Model</th>
+                                    <th>Vehicle Number</th>
+                                    <t t-if="data['count'] > 1">
+                                        <th>Customer</th>
+                                    </t>
+                                    <t t-if="data['adv_count'] > 1">
+                                        <th>Service Advisors</th>
+                                    </t>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>State</th>
+                                    <th>Estimate Amount</th>
+                                    <th>Total Amount</th>
+                                    <t t-if="group_by == 'vehicle_type_id'">
+                                        <th>Service Type</th>
+                                    </t>
+                                    <t t-if="group_by == 'service_type'">
+                                        <th>Vehicle Type</th>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="repair" t-as="rep">
+
+                                    <t t-if="rep['vehicle'] == type">
+                                        <tr>
+                                            <td>
+                                                <span t-out="rep['fleet']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['vehicle_number']"/>
+                                            </td>
+                                            <t t-if="data['count'] > 1">
+                                                <td>
+                                                    <span t-out="rep['name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="data['adv_count'] > 1">
+                                                <td>
+                                                    <span t-out="rep['user_name']"/>
+                                                </td>
+                                            </t>
+                                            <td>
+                                                <span t-out="rep['start_date']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['due_date']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['state']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['estimated_amount']"/>
+                                            </td>
+                                            <td>
+                                                <span t-out="rep['total_cost']"/>
+                                            </td>
+                                            <t t-if="group_by == 'vehicle_type_id'">
+
+                                                <td>
+                                                    <span t-out="rep['service_type']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="group_by == 'service_type'">
+                                                <td>
+                                                    <span t-out="rep['vehicle']"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

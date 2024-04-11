@@ -1,0 +1,231 @@
+In Odoo, decorators are used to modify the behavior of methods in models.
+
+@api.depends(fields):
+
+This decorator is used to trigger the method
+when the specified fields are changed.
+When one of the specified fields changes, the method will be recomputed.
+@api.depends('field1', 'field2') def _compute_method(self): # Method logic
+
+@api.onchange(field):
+
+This decorator triggers the method when the specified field changes in the form view.
+It's typically used to update other fields based on the changed value.
+@api.onchange('field') def _onchange_method(self): # Method logic
+
+@api.depends_context('key'):
+This decorator is used to trigger the method when the specified key in the context changes.
+@api.depends_context('key') def _compute_method(self): # Method logic
+
+@api.multi:
+This decorator indicates that the method can operate on multiple records. It's used when you need to perform batch operations.
+@api.multi def _method(self): # Method logic
+
+****************************************************************************************************
+
+Regarding the use of compute and store, here's the explanation:
+
+compute:
+This attribute specifies a method that computes the value of the field.
+It's used when the field's value is not stored in the database but computed on the fly when needed.
+
+store=True:
+This attribute specifies that the computed value should be stored in the database.
+It's used when you want to store the computed value in the database for faster retrieval.
+
+store=False:
+This attribute specifies that the computed value should not be stored in the database.
+It's used when the computed value is either not needed to be stored or when it's derived from other stored fields.
+
+****************************************************************************************************
+
+The workflow for each condition is as follows:
+
+When store=True and compute is specified:
+the method is triggered to compute the value when the specified fields change.
+The computed value is then stored in the database.
+
+When store=False and compute is specified:
+the method is triggered to compute the value when the specified fields change,
+but the computed value is not stored in the database. It's recalculated whenever it's needed.
+
+If compute is not specified, but store=True:
+the field is expected to be computed by an SQL expression or a default value provided in the field definition.
+The value is stored in the database and retrieved directly without the need for computation in Python.
+
+If compute and store=False are both omitted:
+the field is expected to be stored in the database like a regular field,
+and its value is set and retrieved directly without computation.
+
+****************************************************************************************************
+
+decorators are used to extend or modify the behavior of functions or methods.
+Here are some common decorators and their purposes:
+
+1.@api.one, @api.multi, @api.model:
+
+These decorators are used in Odoo's ORM to specify the recordset that the method operates on.
+@api.one is used when the method operates on a single record,
+@api.multi is used when it operates on multiple records,
+and @api.model is used when it operates on the model itself.
+
+2.@api.depends:
+
+This decorator is used to specify the dependencies of a computed field.
+It tells Odoo to recompute the field value whenever the specified dependencies change.
+
+3.@api.onchange:
+
+This decorator is used for methods that should be triggered when the value of a field changes.
+It allows you to automatically update other fields based on the changes in a particular field.
+
+4.@api.constrains:
+
+This decorator is used to enforce constraints on the values of fields.
+It is used for methods that should be triggered when trying to write values to the database to ensure that certain conditions are met.
+
+5.@api.model_create_single, @api.model_create_multi:
+These decorators are used to specify methods that should be called when creating records either one at a time or in bulk.
+
+6.@api.model_delete:
+This decorator specifies a method that should be called when deleting records.
+****************************************************************************************************
+
+The compute field will always be read only. However, there is an inverse method to make it editable
+Inverse Method:
+The inverse function is mainly used to make the compute field editable.
+A user can't change a compute field value.An inverse function can be used to solve this problem.
+
+****************************************************************************************************
+def _search_standard_price(self, operator, value):
+    products = self.env['product.product'].search([('standard_price', operator, value)], limit=None)
+    return [('id', 'in', products.mapped('product_tmpl_id').ids)]
+
+****************************************************************************************************
+Button type='object' and type='action'
+
+For type="object", you need to define a method available at python and add it as name
+<button id="btn_ready_for_delivery" name="action_ready_for_delivery" string="Ready for Delivery"
+                            class="btn-primary" type="object"
+                            invisible="state != 'inprogress'"/>
+
+    def action_ready_for_delivery(self):
+        self.state = "readyfordelivery"
+        template = self.env.ref('vehicle_repair.service_email_template')
+        for rec in self:
+            template.send_mail(rec.id, force_send=True)
+
+Project Template: project_project_view.xml:
+<xpath expr="//button[@name='%(project.project_share_wizard_action)d']"
+
+project/project_project_views.xml (source code):
+<header>
+        <button name="%(project.project_share_wizard_action)d" string="Share Read-only" type="action" class="oe_highlight" groups="project.group_project_manager"
+        invisible="privacy_visibility != 'portal'" context="{'default_access_mode': 'read', 'dialog_size': 'medium'}" data-hotkey="r"/>
+        <button name="%(project.project_share_wizard_action)d" string="Share Editable" type="action" class="oe_highlight" groups="project.group_project_manager"
+        invisible="privacy_visibility != 'portal'" context="{'default_access_mode': 'edit', 'dialog_size': 'medium'}" data-hotkey="e"/>
+        <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}" groups="project.group_project_stages" domain="[('company_id', 'in', (company_id, False))]"/>
+</header>
+
+For type="action", you need to specify which action you need to trigger,  It may be any action (window action, server action, etc..)
+name="%(action_view_sale_advance_payment_inv)d"
+
+****************************************************************************************************
+
+Attributes - field and models:
+
+
+    type = None                         # type of the field (string)
+    relational = False                  # whether the field is a relational one
+    translate = False                   # whether the field is translated
+
+    column_type = None                  # database column type (ident, spec)
+    write_sequence = 0                  # field ordering for write()
+
+    args = None                         # the parameters given to __init__()
+    _module = None                      # the field's module name
+    _modules = None                     # modules that define this field
+    _setup_done = True                  # whether the field is completely set up
+    _sequence = None                    # absolute ordering of the field
+    _base_fields = ()                   # the fields defining self, in override order
+    _extra_keys = ()                    # unknown attributes set on the field
+    _direct = False                     # whether self may be used directly (shared)
+    _toplevel = False                   # whether self is on the model's registry class
+
+    automatic = False                   # whether the field is automatically created ("magic" field)
+    inherited = False                   # whether the field is inherited (_inherits)
+    inherited_field = None              # the corresponding inherited field
+
+    name = None                         # name of the field
+    model_name = None                   # name of the model of this field
+    comodel_name = None                 # name of the model of values (if relational)
+
+    store = True                        # whether the field is stored in database
+    index = None                        # how the field is indexed in database
+    manual = False                      # whether the field is a custom field
+    copy = True                         # whether the field is copied over by BaseModel.copy()
+    _depends = None                     # collection of field dependencies
+    _depends_context = None             # collection of context key dependencies
+    recursive = False                   # whether self depends on itself
+    compute = None                      # compute(recs) computes field on recs
+    compute_sudo = False                # whether field should be recomputed as superuser
+    precompute = False                  # whether field has to be computed before creation
+    inverse = None                      # inverse(recs) inverses field on recs
+    search = None                       # search(recs, operator, value) searches on self
+    related = None                      # sequence of field names, for related fields
+    company_dependent = False           # whether ``self`` is company-dependent (property field)
+    default = None                      # default(recs) returns the default value
+
+    string = None                       # field label
+    export_string_translation = True    # whether the field label translations are exported
+    help = None                         # field tooltip
+    readonly = False                    # whether the field is readonly
+    required = False                    # whether the field is required
+    states = None                       # set readonly and required depending on state (deprecated)
+    groups = None                       # csv list of group xml ids
+    change_default = False              # whether the field may trigger a "user-onchange"
+
+    related_field = None                # corresponding related field
+    group_operator = None               # operator for aggregating values
+    group_expand = None                 # name of method to expand groups in read_group()
+    prefetch = True                     # the prefetch group (False means no group)
+
+    default_export_compatible = False   # whether the field must be exported by default in an import-compatible export
+    exportable = True
+
+****************************************************************************************************
+
+ORM Method : https://www.cybrosys.com/blog/orm-methods-in-odoo-17
+
+****************************************************************************************************
+
+write() vs update():
+
+Write() Updates all records in the current set with the provided values,
+but write() is one of the CRUD methods that do not work for records set which are not present in the database.
+An onchange method returns pseudo-records which do not exist in the database yet.
+So set record's field using update() method as calling write() method gives an undefined behavior.
+
+1. write() can update multiple records and its corresponding fields at the same time.
+
+2. update() is designed to work with pseudo-records.
+
+The only benefit of write() is the ability to update multiple records.
+
+When setting multiple fields at the same time use write()
+so that if it takes a number of field values the function writes them to all the records in its recordset.
+self.write({'name':'Name', 'age': age})
+So gives you single update statement in the database.
+But update() only works on singletons and performs a database write for each written field.
+So at a time it updates only single record.
+It Iterates through the fields and sets each one separately giving you multiple update statements in the database.
+
+****************************************************************************************************
+
+overriding vs overwriting:
+overriding is mostly adding to having the ability to change the existing functionality of something;
+however, overwriting replaces the existing functionality.
+
+****************************************************************************************************
+
+SQL Constraints and Python Constraints:

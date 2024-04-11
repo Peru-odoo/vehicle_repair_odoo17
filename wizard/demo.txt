@@ -1,0 +1,69 @@
+I hope I get this job , I don't want to think about my mental state and all
+I should be thinking  how to  get this job and make money and support my parents financially
+God Please I hope they select me and put me in nice group where I can learn and actually become
+perfect at coding and start to enjoy work or get interested
+ And if I don't get selected then I will think you have protected me from here
+
+ 25,24,23,22,20,19,18,17,16,15,12,11
+
+Don't stress kid what if You don't need to do coding all those 11 days
+swetha what it takes to get this job miracle
+
+
+ Write the concept you learned these days:
+
+ 1) CONTEXT:
+ * Using the Context to pass default values for fields
+ <field name="employee_id" context="{'default_company_id' : company_id}">
+
+ * Using context in search view and filters.
+
+ * Using Context in Window actions
+
+ 2) DOMAIN:
+  domain="[(field_name, 'operator', ‘value’)]"
+
+* Using domain in a search view filter.
+* Using domain in record rule.
+
+3) FILTERED, MAPPED AND SORTED:
+
+i. sorted(): To sort a recordset
+# sort records by name
+recset.sorted(key=lambda r: r.name)
+
+ii. filtered(): To filter a recordset:
+
+# only keep records whose company is the current user's
+records.filtered(lambda r: r.company_id == user.company_id)
+
+# only keep records whose partner is a company
+records.filtered("partner_id.is_company")
+
+iii. mapped(): To map a recordset by applying the provided function to each record in the recordset
+and returns a recordset if the results are recordsets.
+
+recordset.mapped(lambda record: record.amount + record.tax_amount)
+
+# returns a list of name
+recset.mapped('name')
+
+# returns a recordset of partners
+recset.mapped('invoice_id.partner_id')
+
+4) DIFFERENCE BETWEEN ONCHANGE AND COMPUTE:
+
+
+5) TYPES OF ACTIONS IN ODOO:
+i. Server Actions (ir.actions.server) :
+
+ii. Client Actions (ir.actions.client)
+
+iii. Automatic Actions (ir.cron)
+
+iv. URL Actions (ir.actions.act_url)
+
+v. Report Actions (ir.actions.report)
+
+vi. Window Actions ( ir.actions.act_window )
+

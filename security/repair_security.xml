@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.module.category" id="module_category_repair">
+        <field name="name">Repair Management</field>
+        <field name="description">Category For Repair</field>
+    </record>
+
+    <record model="res.groups" id="group_repair_manager">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_repair"/>
+    </record>
+
+    <record model="res.groups" id="group_repair_technician">
+        <field name="name">Technician</field>
+        <field name="category_id" ref="module_category_repair"/>
+    </record>
+
+    <record id="ir_rule_repair_records" model="ir.rule">
+        <field name="name">Manager Records</field>
+        <field name="model_id" ref="vehicle_repair.model_vehicle_repair"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="groups" eval="[(4, ref('group_repair_manager'))]"/>
+    </record>
+
+    <record id="ir_rule_repair_technician_records" model="ir.rule">
+        <field name="name">Technicians Records</field>
+        <field name="model_id" ref="vehicle_repair.model_vehicle_repair"/>
+        <field name="domain_force">[('service_advisor_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="groups" eval="[(4, ref('group_repair_technician'))]"/>
+    </record>
+
+    <record id="ir_rule_repair_company_records" model="ir.rule">
+        <field name="name">Company Records</field>
+        <field name="model_id" ref="vehicle_repair.model_vehicle_repair"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+</odoo>

@@ -1,0 +1,34 @@
+3 inheritance, 3 models, decorators with function and without function in very deep
+with store=true anf false condition
+types of action
+I have to study for functions too
+
+Module structure and basic coding standards
+Fields, Relation fields
+Decorators
+Difference between onchange and compute
+Characteristics of compute methods
+Button types (object, action)
+Attributes - field and models
+ORM methods
+Overwrite and override (Purpose of super statement above and below)
+Context and domain
+Different type of function calls and argument passing
+Data and data files
+Filter and group by
+Model attributes (_description, _auto, _order, env etc)
+Python constraints and SQL constraints
+Update, Write, Direct Assign (field = 1)
+Button types (object, action)
+Filtered
+Mapped
+Sorted
+Exceptions
+Actions
+Multi company
+Security
+Git (commit, push, pull)
+Conf file parameters
+Hosting methods
+X2many operations
+Inheritance (purpose of _inherit = [] )

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="repair_details">
+        <t t-call="website.layout">
+            <div id="repair_detail_form">
+                <div class="container" style="position: relative;">
+                    <t t-foreach="details" t-as="det">
+                        <div class="row">
+                            <h1 style="  position: absolute;left: 50%">Repair Details</h1>
+                            <div>
+                                <div style="  position: absolute;left: 20%;margin-top: 50px;">
+                                    <img class="card-img-top" t-attf-src="data:image/png;base64,{{det.image}}"
+                                         style="padding: 0px; margin: 0px; height: 350px; width:355px;   border-radius: 25px; "/>
+                                </div>
+                                <div class="col-sm" style="position: absolute; left: 60%; margin-top: 70px;">
+                                    <div>
+                                        <h4>Customer Name:
+                                            <span style="color:black">
+                                                <t t-esc="det.customer_id.name"/>
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <h4>Vehicle Model:
+                                            <span style="color:black">
+                                                <t t-esc="det.vehicle_model_id.name"/>
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <h4>Vehicle Number:
+                                            <span style="color:black">
+                                                <t t-esc="det.vehicle_number"/>
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <h4>Service Type:
+                                            <span style="color:black">
+                                                <t t-esc="det.service_type"/>
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <h4>service Advisor:
+                                            <span style="color:black">
+                                                <t t-esc="det.service_advisor_id.name"/>
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <h4>Cost:
+                                            <span style="color:black">
+                                                <t t-esc="det.total_cost"/>
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

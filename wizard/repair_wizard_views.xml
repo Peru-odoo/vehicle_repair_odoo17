@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="repair_wizard_form" model="ir.ui.view">
+            <field name="name">repair.wizard.form</field>
+            <field name="model">repair.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Repair Report Wizard">
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="customer_ids" widget="many2many_tags"/>
+                        <field name="service_advisor_ids" widget="many2many_tags"/>
+                        <field name="group_by"/>
+                    </group>
+                    <footer>
+                        <button name="generate_report" string="Generate PDF" type="object" class="btn-primary"/>
+                        <button name="generate_xlsx_report" string="XLSX Report" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+    <record id="repair_report_wizard" model="ir.actions.act_window">
+        <field name="name">Repair Report Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">repair.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="repair_wizard_form"/>
+        <field name="target">new</field>
+
+    </record>
+</odoo>

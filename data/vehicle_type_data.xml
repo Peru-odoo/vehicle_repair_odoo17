@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="vehicle_type_seden" model="fleet.vehicle.model.category">
+        <field name="name">Seden</field>
+    </record>
+
+    <record id="configuration_hatchback" model="fleet.vehicle.model.category">
+        <field name="name">Hatchback</field>
+    </record>
+
+    <record id="configuration_muv" model="fleet.vehicle.model.category">
+        <field name="name">MUV</field>
+    </record>
+
+</odoo>
